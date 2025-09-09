@@ -12,8 +12,5 @@ namespace ISOTEP_WEB.Controllers
         {
             return View();
         }
-
-
-      
     }
 }

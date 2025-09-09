@@ -1,38 +1,128 @@
 ﻿@{
     ViewBag.Title = "Consultar Registro";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
 
-<h2>Consultar Registro de Practicante</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <style>
+        body {
+            background: #f8f6f3;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #3a1a1a;
+            margin: 0;
+            padding: 0;
+        }
 
-<form id="formConsulta">
-    <label>Ingresa tu matrícula:</label>
-    <input name="matricula" id="matricula" required />
-    <button type="submit">Consultar</button>
-</form>
+        .main-container {
+            max-width: 500px;
+            margin: 80px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(58,26,26,0.08);
+            padding: 40px 30px 30px 30px;
+            text-align: center;
+        }
 
-<div id="resultado" style="margin-top: 20px;"></div>
+        h2 {
+            color: #7b112c; /* Rojo vino */
+            margin-bottom: 30px;
+        }
 
-<script>
-    document.getElementById("formConsulta").addEventListener("submit", function (e) {
-        e.preventDefault();
-        const matricula = document.getElementById("matricula").value;
+        label {
+            font-weight: 600;
+            color: #7b112c;
+            display: block;
+            margin-bottom: 10px;
+        }
 
-        fetch("/api/practicantes?matricula=" + encodeURIComponent(matricula))
-            .then(res => {
-                if (!res.ok) throw new Error("No encontrado");
-                return res.json();
-            })
-            .then(data => {
-                document.getElementById("resultado").innerHTML = `
-                    <p><strong>Nombre:</strong> ${data.Nombre} ${data.ApellidoPaterno} ${data.ApellidoMaterno}</p>
-                    <p><strong>Correo:</strong> ${data.Correo_electronico}</p>
-                    <p><strong>Carrera:</strong> ${data.Carrera?.NombreCarrera || data.EscuelaNMSCarreraID}</p>
-                `;
-            })
-            .catch(() => {
-                document.getElementById("resultado").innerHTML = `<p style="color:red">No se encontró un practicante con esa matrícula.</p>`;
-            });
-    });
-</script>
+        input[type="text"], input[type="number"] {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #c9a13b;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
 
+        .btn-consultar {
+            background: #c9a13b; /* Dorado */
+            color: #3a1a1a;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 28px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+
+            .btn-consultar:hover {
+                background: #e6c15c;
+                color: #7b112c;
+            }
+
+        #resultado {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+            #resultado p {
+                margin: 8px 0;
+                font-size: 1.05em;
+            }
+
+        .error-msg {
+            color: #7b112c;
+            font-weight: bold;
+        }
+
+        .uni-footer {
+            margin-top: 40px;
+            color: #7b112c;
+            font-size: 0.95em;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h2>Consultar Registro de Practicante</h2>
+        <form id="formConsulta" autocomplete="off">
+            <label for="matricula">Ingresa tu matrícula:</label>
+            <input name="matricula" id="matricula" required />
+            <br />
+            <button type="submit" class="btn-consultar">Consultar</button>
+        </form>
+        <div id="resultado"></div>
+        <div class="uni-footer">
+            Universidad Politecnica de Tecamac &copy; @DateTime.Now.Year
+        </div>
+    </div>
+    <script>
+        document.getElementById("formConsulta").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const matricula = document.getElementById("matricula").value;
+
+            fetch("/api/practicantes?matricula=" + encodeURIComponent(matricula))
+                .then(res => {
+                    if (!res.ok) throw new Error("No encontrado");
+                    return res.json();
+                })
+                .then(data => {
+                    document.getElementById("resultado").innerHTML = `
+                            <p><strong>Nombre:</strong> ${data.Nombre} ${data.ApellidoPaterno} ${data.ApellidoMaterno}</p>
+                            <p><strong>Correo:</strong> ${data.Correo_electronico}</p>
+                            <p><strong>Carrera:</strong> ${data.Carrera?.NombreCarrera || data.EscuelaNMSCarreraID}</p>
+                        `;
+                })
+                .catch(() => {
+                    document.getElementById("resultado").innerHTML = `<p class="error-msg">No se encontró un practicante con esa matrícula.</p>`;
+                });
+        });
+    </script>
+</body>
+</html>

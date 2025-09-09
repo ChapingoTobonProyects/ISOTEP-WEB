@@ -1,18 +1,104 @@
 ﻿@{
     ViewBag.Title = "Buscar Matrícula";
+    Layout = null;
 }
 
-<h2>Consulta de Estudiante</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <style>
+        body {
+            background: #f8f6f3;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #3a1a1a;
+            margin: 0;
+            padding: 0;
+        }
 
-@using (Html.BeginForm("Buscar", "Consulta", FormMethod.Post))
-{
-    <label>Matrícula:</label>
-    <input type="text" name="matricula" class="form-control" required />
-    <br />
-    <button type="submit" class="btn btn-success">Buscar</button>
-}
+        .main-container {
+            max-width: 500px;
+            margin: 80px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(58,26,26,0.08);
+            padding: 40px 30px 30px 30px;
+            text-align: center;
+        }
 
-@if (ViewBag.Mensaje != null)
-{
-    <p class="alert alert-warning">@ViewBag.Mensaje</p>
-}
+        h2 {
+            color: #7b112c; /* Rojo vino */
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #7b112c;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #c9a13b;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+
+        .btn-buscar {
+            background: #c9a13b; /* Dorado */
+            color: #3a1a1a;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 28px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+
+            .btn-buscar:hover {
+                background: #e6c15c;
+                color: #7b112c;
+            }
+
+        .alert {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 6px;
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            font-weight: 600;
+        }
+
+        .uni-footer {
+            margin-top: 40px;
+            color: #7b112c;
+            font-size: 0.95em;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h2>Consulta de Estudiante</h2>
+        <form method="post" autocomplete="off">
+            <label for="matricula">Matrícula:</label>
+            <input type="text" name="matricula" id="matricula" required />
+            <br />
+            <button type="submit" class="btn-buscar">Buscar</button>
+        </form>
+        @if (ViewBag.Mensaje != null)
+        {
+            <div class="alert">@ViewBag.Mensaje</div>
+        }
+        <div class="uni-footer">
+            Universidad Politecnica de Tecamac &copy; @DateTime.Now.Year
+        </div>
+    </div>
+</body>
+</html>

@@ -1,36 +1,116 @@
 ﻿@{
     ViewBag.Title = "Lista de Practicantes";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
 
-<h2>Lista de Practicantes Registrados</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <style>
+        body {
+            background: #f8f6f3;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #3a1a1a;
+            margin: 0;
+            padding: 0;
+        }
 
-<table id="tabla" border="1">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Matricula</th>
-            <th>Correo</th>
-            <th>Carrera</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+        .main-container {
+            max-width: 900px;
+            margin: 60px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(58,26,26,0.08);
+            padding: 40px 30px 30px 30px;
+        }
 
-<script>
-    fetch("/api/practicantes")
-        .then(res => res.json())
-        .then(data => {
-            const tbody = document.querySelector("#tabla tbody");
-            data.forEach(p => {
-                const row = `<tr>
-                    <td>${p.Nombre} ${p.ApellidoPaterno} ${p.ApellidoMaterno}</td>
-                    <td>${p.Matricula}</td>
-                    <td>${p.Correo_electronico}</td>
-                    <td>${p.Carrera?.NombreCarrera || p.EscuelaNMSCarreraID}</td>
-                </tr>`;
-                tbody.innerHTML += row;
+        h2 {
+            color: #7b112c; /* Rojo vino */
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background: #fff;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #c9a13b;
+            text-align: left;
+        }
+
+        th {
+            background: #7b112c;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f3e6d6;
+        }
+
+        .uni-footer {
+            margin-top: 30px;
+            color: #7b112c;
+            font-size: 0.95em;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .error-msg {
+            color: #7b112c;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h2>Lista de Practicantes Registrados</h2>
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Matrícula</th>
+                    <th>Correo</th>
+                    <th>Carrera</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div id="error" class="error-msg"></div>
+        <div class="uni-footer">
+            Universidad Politecnica de Tecamac &copy; @DateTime.Now.Year
+        </div>
+    </div>
+    <script>
+        fetch("/api/practicantes")
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.querySelector("#tabla tbody");
+                if (!data.length) {
+                    document.getElementById("error").textContent = "No hay practicantes registrados.";
+                    return;
+                }
+                data.forEach(p => {
+                    const row = `<tr>
+                            <td>${p.Nombre} ${p.ApellidoPaterno} ${p.ApellidoMaterno}</td>
+                            <td>${p.Matricula}</td>
+                            <td>${p.Correo_electronico}</td>
+                            <td>${p.Carrera?.NombreCarrera || p.EscuelaNMSCarreraID}</td>
+                        </tr>`;
+                    tbody.innerHTML += row;
+                });
+            })
+            .catch(() => {
+                document.getElementById("error").textContent = "Error al cargar los practicantes.";
             });
-        })
-        .catch(() => alert("Error al cargar los practicantes"));
-</script>
+    </script>
+</body>
+</html>

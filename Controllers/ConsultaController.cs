@@ -37,5 +37,11 @@ namespace ISOTEP_WEB.Controllers
 
             return View("Detalle", practicante);
         }
+
+        // GET: Consulta/Index
+        public ActionResult Index()
+        {
+            return View();
+        }
     }
 }

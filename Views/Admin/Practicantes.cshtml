@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Lista de Practicantes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Lista de Practicantes Registrados</h2>
+
+<table id="tabla" border="1">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Matricula</th>
+            <th>Correo</th>
+            <th>Carrera</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    fetch("/api/practicantes")
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.querySelector("#tabla tbody");
+            data.forEach(p => {
+                const row = `<tr>
+                    <td>${p.Nombre} ${p.ApellidoPaterno} ${p.ApellidoMaterno}</td>
+                    <td>${p.Matricula}</td>
+                    <td>${p.Correo_electronico}</td>
+                    <td>${p.Carrera?.NombreCarrera || p.EscuelaNMSCarreraID}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        })
+        .catch(() => alert("Error al cargar los practicantes"));
+</script>

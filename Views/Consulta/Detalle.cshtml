@@ -1,0 +1,14 @@
+﻿@model ISOTEP_WEB.Models.Practicante
+
+@{
+    ViewBag.Title = "Resultado de Búsqueda";
+}
+
+<h2>Practicante Encontrado</h2>
+
+<table class="table table-bordered">
+    <tr><th>Nombre:</th><td>@Model.Nombre @Model.ApellidoPaterno @Model.ApellidoMaterno</td></tr>
+    <tr><th>Matrícula:</th><td>@Model.Matricula</td></tr>
+    <tr><th>Correo:</th><td>@Model.Correo_electronico</td></tr>
+    <tr><th>Carrera:</th><td>@Model.EscuelaNMSCarrera?.Carrera?.NombreCarrera</td></tr>
+</table>

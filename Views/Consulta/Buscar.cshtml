@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Buscar Matrícula";
+}
+
+<h2>Consulta de Estudiante</h2>
+
+@using (Html.BeginForm("Buscar", "Consulta", FormMethod.Post))
+{
+    <label>Matrícula:</label>
+    <input type="text" name="matricula" class="form-control" required />
+    <br />
+    <button type="submit" class="btn btn-success">Buscar</button>
+}
+
+@if (ViewBag.Mensaje != null)
+{
+    <p class="alert alert-warning">@ViewBag.Mensaje</p>
+}

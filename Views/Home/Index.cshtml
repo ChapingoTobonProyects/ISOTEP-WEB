@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Inicio";
+    Layout = null;
+}
+
+<h2>Bienvenido al sistema ISOTEP</h2>
+
+<p style="margin-top: 20px;">
+    <a href="@Url.Action("Login", "Account")" class="btn btn-primary">Ingresar como Administrador</a>
+    <a href="@Url.Action("Buscar", "Consulta")" class="btn btn-success">Consultar como Estudiante</a>
+</p>

@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Registro de Practicante";
+    Layout = "~/Views/Shared/_Layout.cshtml"; 
+}
+
+}
+<h2>Registro de Practicante</h2>
+
+<form id="registroForm">
+    <input name="Nombre" placeholder="Nombre" required /><br />
+    <input name="ApellidoPaterno" placeholder="Apellido Paterno" required /><br />
+    <input name="ApellidoMaterno" placeholder="Apellido Materno" required /><br />
+    <input name="Matricula" placeholder="Matrícula" required /><br />
+    <input name="CURP" placeholder="CURP" required /><br />
+    <input name="TelefonoAlumno" placeholder="Teléfono Alumno" required /><br />
+    <input name="TelefonoTutor" placeholder="Teléfono Tutor" required /><br />
+    <input name="Correo_electronico" placeholder="Correo Electrónico" required /><br />
+    <input name="Domicilio" placeholder="Domicilio" required /><br />
+    <input name="NSS" placeholder="NSS" required /><br />
+    <input name="Genero" placeholder="Género" required /><br />
+    <input name="Promedio" type="number" step="0.1" placeholder="Promedio" required /><br />
+    <input name="Turno" placeholder="Turno" required /><br />
+    <input name="EscuelaNMSCarreraID" type="number" placeholder="ID Carrera (Ej: 1)" required /><br />
+    <br />
+    <button type="submit">Registrar</button>
+</form>
+
+<div id="mensaje" style="margin-top: 20px; font-weight: bold;"></div>
+<style>
+</style>
+<script>
+    document.getElementById("registroForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const data = {
+            Nombre: form.Nombre.value,
+            ApellidoPaterno: form.ApellidoPaterno.value,
+            ApellidoMaterno: form.ApellidoMaterno.value,
+            Matricula: form.Matricula.value,
+            CURP: form.CURP.value,
+            TelefonoAlumno: form.TelefonoAlumno.value,
+            TelefonoTutor: form.TelefonoTutor.value,
+            Correo_electronico: form.Correo_electronico.value,
+            Domicilio: form.Domicilio.value,
+            NSS: form.NSS.value,
+            Genero: form.Genero.value,
+            Promedio: parseFloat(form.Promedio.value),
+            Turno: form.Turno.value,
+            EscuelaNMSCarreraID: parseInt(form.EscuelaNMSCarreraID.value)
+        };
+
+        fetch("/api/practicantes", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(response => {
+                if (response.id) {
+                    document.getElementById("mensaje").innerText = "✅ Practicante registrado con ID: " + response.id;
+                    form.reset();
+                } else {
+                    document.getElementById("mensaje").innerText = "❌ Error: " + (response.message || "Verifica los datos");
+                }
+            })
+            .catch(error => {
+                document.getElementById("mensaje").innerText = "❌ Error de conexión: " + error;
+            });
+    });
+</script>
+

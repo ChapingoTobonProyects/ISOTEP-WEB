@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Consultar Registro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Consultar Registro de Practicante</h2>
+
+<form id="formConsulta">
+    <label>Ingresa tu matrícula:</label>
+    <input name="matricula" id="matricula" required />
+    <button type="submit">Consultar</button>
+</form>
+
+<div id="resultado" style="margin-top: 20px;"></div>
+
+<script>
+    document.getElementById("formConsulta").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const matricula = document.getElementById("matricula").value;
+
+        fetch("/api/practicantes?matricula=" + encodeURIComponent(matricula))
+            .then(res => {
+                if (!res.ok) throw new Error("No encontrado");
+                return res.json();
+            })
+            .then(data => {
+                document.getElementById("resultado").innerHTML = `
+                    <p><strong>Nombre:</strong> ${data.Nombre} ${data.ApellidoPaterno} ${data.ApellidoMaterno}</p>
+                    <p><strong>Correo:</strong> ${data.Correo_electronico}</p>
+                    <p><strong>Carrera:</strong> ${data.Carrera?.NombreCarrera || data.EscuelaNMSCarreraID}</p>
+                `;
+            })
+            .catch(() => {
+                document.getElementById("resultado").innerHTML = `<p style="color:red">No se encontró un practicante con esa matrícula.</p>`;
+            });
+    });
+</script>
+
